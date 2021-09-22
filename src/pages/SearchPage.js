@@ -11,13 +11,16 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import RoomIcon from '@mui/icons-material/Room';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ListItemSecondaryAction } from '@mui/material';
+import Response from '../response';
 
 function SearchPage() {
     const [{ term }, dispatch] = useStateValue();
     // Live call
-    // const { data } = useGoogleSearch(term);
+    const { data } = useGoogleSearch(term);
 
-    // console.log(data)
+        
+    // const data = Response;
+    console.log(data)
     return (
         <div className="searchPage">
             <div className="searchPage__header">
@@ -65,19 +68,25 @@ function SearchPage() {
                     </div>
                 </div>
             </div>
-            {true && (
+            {term && (
                 <div className="searchPage__results">
                     <p className="searchPage__resultCount">
                         About {data?.searchInformation.formattedTotalResults} results ({data?.searchInformation.formattedSearchTime} seconds for {term})
                     </p>
                     {data?.items.map(item => (
                         <div className="searchPage__result">
-                            <a href={item.link}>
+                            <a className="searchPage__resultLink" href={item.link}>
+                                {item.pagemap?.cse_image?.length > 0 && item.pagemap?.cse_image[0]?.src && (
+                                <img className="searchPage__resultImage" src={item.pagemap?.cse_image?.length > 0 && item.pagemap?.cse_image[0]?.src} alt="" />
+                                )}
                                 {item.displayLink}
                             </a>
-                            <a className="searchPage__Title" href={item.link}>
-                                <h1>{item.title}</h1>
+                            <a className="searchPage__resultTitle" href={item.link}>
+                                <h2>{item.title}</h2>
                             </a>
+                            <p className="searchPage__resultSnippet">
+                                {item.snippet}
+                            </p>
                         </div>
                     ))}
                 </div>
